@@ -9,7 +9,7 @@
 
 ## Overview
 
-A QGIS Processing tool that extracts raster pixel values (satellite imagery bands, vegetation indices such as NDVI, NDWI, MNDWI, etc.) at field sample point locations automatically.
+A QGIS Processing tool that extracts raster pixel values (satellite imagery bands, vegetation indices such as NDVI, NDWI, MNDWI, SAVI, etc.) at field sample point locations automatically.
 
 Key advantage over the built-in QGIS **Sample Raster Values** tool:
 - Supports **multiple raster inputs** in a single run
@@ -18,17 +18,87 @@ Key advantage over the built-in QGIS **Sample Raster Values** tool:
 
 ---
 
-## Installation
+## Installation & Step-by-Step Usage
 
-1. Open **QGIS 3.x**
-2. Go to **Processing → Toolbox**
-3. Click the **Python icon (⚙️)** at the top → select **Add Script to Toolbox...**
-4. Browse to and select `SpectralValueExtractor_script.py`
-5. The tool will appear under **Remote Sensing Tools → Spectral Value Extractor**
+### Step 1 — Add Script to Processing Toolbox
+
+Open **Processing → Toolbox**, then click the **Python icon (⚙️)** at the top of the Toolbox panel and select **Add Script to Toolbox...**
+
+<img width="1920" height="1080" alt="Screenshot 2026-06-09 162714" src="https://github.com/user-attachments/assets/e9001fa4-0823-45ba-a407-67ccc4224d77" />
+
 
 ---
 
-## Parameters
+### Step 2 — Browse and Select the Script File
+
+In the file browser that opens, navigate to where you saved `SpectralValueExtractor_script.py` and select it, then click **Open**.
+
+<img width="865" height="580" alt="Screenshot 2026-06-09 162805" src="https://github.com/user-attachments/assets/6573779f-4e2b-468e-8a67-d014ebcb89cd" />
+
+
+---
+
+### Step 3 — Find the Tool in the Toolbox
+
+The tool will now appear under **Scripts → Remote Sensing Tools → Spectral Value Extractor** in the Processing Toolbox. Double-click it to open.
+<img width="639" height="358" alt="Screenshot 2026-06-09 162824" src="https://github.com/user-attachments/assets/8ef1e9f5-358f-4977-9496-7c4ad60cecdc" />
+
+
+---
+
+### Step 4 — Fill in the Parameters
+
+The tool dialog will open. Fill in the following:
+
+- **Field Sample Points** — select your point layer (e.g. `field_samples`)
+- **Point ID / Label Field** — select the column that identifies each point
+- **Raster / Spectral Index Layers** — click `...` to select one or more rasters
+- **Custom Band Names** — optional, e.g. `NDVI,SAVI`
+- **Include X and Y Coordinate Columns** — check this to add coordinate columns
+- **Save Output as CSV** — set a file path to save the CSV result
+
+<img width="1200" height="758" alt="Screenshot 2026-06-09 162852" src="https://github.com/user-attachments/assets/fa86d3ab-ce85-4af7-938a-f2c27b150f7c" />
+
+
+---
+
+### Step 5 — Select Raster Layers
+
+When you click `...` next to Raster Layers, a panel opens listing all rasters currently loaded in QGIS. Check all the layers you want to extract values from. You can also use **Add File(s)...** to load rasters directly from disk without adding them to the map first.
+
+<img width="1229" height="789" alt="Screenshot 2026-06-09 162904" src="https://github.com/user-attachments/assets/2b020265-9ac8-43f2-95b4-96b00d0a99e4" />
+
+
+---
+
+### Step 6 — Run and Check the Log
+
+Click **Run**. The Log tab will show the progress and results — number of points processed, bands extracted, and the CSV output path.
+
+<img width="1224" height="775" alt="Screenshot 2026-06-09 162921" src="https://github.com/user-attachments/assets/295a7e3e-4c91-4884-b802-653ca05efbdd" />
+
+
+---
+
+### Step 7 — Output Layer Added to QGIS
+
+Once finished, the output point layer is automatically added to the Layers panel. It contains all the original point attributes plus the new spectral value columns.
+
+<img width="647" height="527" alt="Screenshot 2026-06-09 162941" src="https://github.com/user-attachments/assets/97d41d1f-3b6c-4eb8-b94e-2c179a9d4529" />
+
+
+---
+
+### Step 8 — View Results in Attribute Table
+
+Open the attribute table of the output layer to see the extracted spectral values for each point — including X/Y coordinates and all selected band/index values.
+
+<img width="802" height="580" alt="Screenshot 2026-06-09 162958" src="https://github.com/user-attachments/assets/2af2a2fc-0480-4d05-811b-43d155a3d419" />
+
+
+---
+
+## Parameters Reference
 
 | Parameter | Description |
 |-----------|-------------|
@@ -39,32 +109,6 @@ Key advantage over the built-in QGIS **Sample Raster Values** tool:
 | **Include X and Y Coordinate Columns** | Check to append X and Y coordinate columns to the output |
 | **Save Output as CSV** | File path for the CSV output |
 | **Output Layer** | New point layer in QGIS with spectral values as attributes |
-
----
-
-## Example
-
-**Scenario:** You have 50 field sample points and want to extract values from:
-- Sentinel-2 imagery (10 bands)
-- NDVI layer (1 band)
-- NDWI layer (1 band)
-
-**Steps:**
-1. Load all raster layers into QGIS
-2. Open the tool and select the sample point layer
-3. Select the ID column, e.g. `Sample_ID`
-4. Select all three rasters under Raster Layers (hold Ctrl for multi-select)
-5. Optionally fill in custom band names: `B2,B3,B4,B5,B6,B7,B8,B8A,B11,B12,NDVI,NDWI`
-6. Check Include X and Y Coordinate Columns
-7. Set the CSV output path
-8. Click **Run**
-
-**Example CSV output:**
-```
-Sample_ID, X_Coord, Y_Coord, B2, B3, B4, NDVI, NDWI
-T001, 108.5231, -6.8821, 0.0612, 0.0891, 0.1203, 0.4521, 0.1832
-T002, 108.5291, -6.8756, 0.0534, 0.0762, 0.0983, 0.5102, 0.2211
-```
 
 ---
 
